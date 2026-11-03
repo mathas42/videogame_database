@@ -42,24 +42,16 @@ def create_preprocessor(X_train):
         exclude=["number"]
     ).columns.tolist()
 
-    # Prétraitement numérique
-    numeric_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="median"))
-    ])
-
-    # Prétraitement catégoriel
-    categorical_transformer = Pipeline([
-        ("imputer", SimpleImputer(strategy="most_frequent")),
-        ("encoder", OneHotEncoder(
-            handle_unknown="ignore",
-            min_frequency=10,
-            sparse_output=False
-        ))
-    ])
+    # Encodage des variables catégorielles
+    categorical_transformer = OneHotEncoder(
+        handle_unknown="ignore",
+        min_frequency=10,
+        sparse_output=False
+    )
 
     # Combiner les transformations
     preprocessor = ColumnTransformer([
-        ("num", numeric_transformer, numeric_features),
+        ("num", numeric_features),
         ("cat", categorical_transformer, categorical_features)
     ])
 
