@@ -51,7 +51,7 @@ def create_preprocessor(X_train):
 
     # Combiner les transformations
     preprocessor = ColumnTransformer([
-        ("num", numeric_features),
+        ("num", "passthrough", numeric_features),
         ("cat", categorical_transformer, categorical_features)
     ])
 
