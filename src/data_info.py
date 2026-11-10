@@ -17,20 +17,20 @@ def describe(df):
     return df.describe(include="all").T
 
 def repartition(df):
-    
+
     # Définir les limites des 5 catégories
     limites = [
-    -1,0.001, 0.01, 0.1, 1,
-    20, float("inf")
+        -1, 0.001, 0.01, 0.1, 1,
+        20, float("inf")
     ]
 
     noms = [
-    "<1 000",
-    "1 000-10 000",
-    "10 000-100 000 ",
-    "100 000-1M",
-    "1M-20M",
-    "20M<"
+        "<1 000",
+        "1 000-10 000",
+        "10 000-100 000",
+        "100 000-1M",
+        "1M-20M",
+        "20M<"
     ]
 
     # Attribuer une catégorie à chaque jeu
@@ -40,4 +40,4 @@ def repartition(df):
         labels=noms
     )
 
-    return (categories.value_counts(normalize=True) * 100).sort_index()
+    print((categories.value_counts(normalize=True) * 100).sort_index())
