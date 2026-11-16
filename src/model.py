@@ -30,8 +30,8 @@ def train_random_forest(preprocessor, X_train, y_train):
     rf_search = RandomizedSearchCV(
         rf_pipeline,
         param_distributions=rf_params,
-        n_iter=50,
-        cv=3,
+        n_iter=150,
+        cv=5,
         scoring="neg_root_mean_squared_error",
         random_state=42,
         n_jobs=-1,
@@ -69,8 +69,8 @@ def train_hist_gradient_boosting(preprocessor, X_train, y_train):
     hgb_search = RandomizedSearchCV(
         hgb_pipeline,
         param_distributions=hgb_params,
-        n_iter=50,
-        cv=3,
+        n_iter=150,
+        cv=5,
         scoring="neg_root_mean_squared_error",
         random_state=42,
         n_jobs=-1,
