@@ -3,6 +3,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import OneHotEncoder
+import pandas as pd
 
 
 def split_data(df):
@@ -17,13 +18,28 @@ def split_data(df):
         "Rank"
     ])
 
+    # Find the index of the highest EU_Sales value (fix overfitting)
+    max_index = y.idxmax()
+
+    # Keep the maximum value in the training set
+    X_max = X.loc[[max_index]]
+    y_max = y.loc[[max_index]]
+
+    # Remove this observation before splitting
+    X_remaining = X.drop(index=max_index)
+    y_remaining = y.drop(index=max_index)
+
     # Séparation des données
     X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
+        X_remaining,
+        y_remaining,
         test_size=0.2,
         random_state=42
     )
+
+    # Add the maximum observation to the training set
+    X_train = pd.concat([X_train, X_max])
+    y_train = pd.concat([y_train, y_max])
 
     print("Training data:", X_train.shape)
     print("Test data:", X_test.shape)

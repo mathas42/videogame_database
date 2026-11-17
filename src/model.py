@@ -18,11 +18,11 @@ def train_random_forest(preprocessor, X_train, y_train):
 
     # Hyperparamètres à tester
     rf_params = {
-        "model__n_estimators": [200, 300, 500, 600, 700],
-        "model__max_depth": [None, 10, 20, 30, 40, 50],
-        "model__min_samples_split": [2, 5, 10, 15, 20],
-        "model__min_samples_leaf": [1, 2, 4, 8, 10],
-        "model__max_features": ["sqrt", 0.3, 0.5, 0.7, 1.0],
+        "model__n_estimators": [200, 300, 500, 600, 800],
+        "model__max_depth": [5, 10, 15,  20, 25, 30],
+        "model__min_samples_split": [5, 10, 15, 20, 25],
+        "model__min_samples_leaf": [2, 4, 6, 8, 10, 12],
+        "model__max_features": [ 0.3, 0.5, 0.7, 1.0],
         "model__bootstrap": [True, False]
     }
 
@@ -57,12 +57,12 @@ def train_hist_gradient_boosting(preprocessor, X_train, y_train):
 
     # Hyperparamètres à tester
     hgb_params = {
-        "model__max_iter": [100, 200, 300, 500, 1000],
-        "model__learning_rate": [0.01, 0.03, 0.05, 0.1, 0.15, 0.3],
-        "model__max_leaf_nodes": [15, 30, 50, 75, 100],
-        "model__max_depth": [None, 5, 10, 15, 20],
-        "model__min_samples_leaf": [10, 20, 30, 40, 50],
-        "model__l2_regularization": [0, 0.1, 1, 5, 10, 50]
+        "model__max_iter": [100, 200, 300, 500, 700],
+        "model__learning_rate": [0.01, 0.03, 0.05, 0.1],
+        "model__max_leaf_nodes": [5, 10, 15, 20, 30, 50],
+        "model__max_depth": [3, 5, 10, 15],
+        "model__min_samples_leaf": [30, 40, 50, 60, 70],
+        "model__l2_regularization": [0.1, 1, 5, 10, 20, 50]
     }
 
     # Recherche des meilleurs hyperparamètres
