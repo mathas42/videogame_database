@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import learning_curve
 
 
 # 1. Compare actual values with predicted values
@@ -31,26 +32,71 @@ def plot_actual_vs_predicted(y_test, predictions, model_name):
     plt.tight_layout()
     plt.show()
 
+# 2. Check overfitting
+def plot_learning_curve(model, X, y, model_name):
 
-# 2. Analyze prediction errors (residuals)
-def plot_residuals(y_test, predictions, model_name):
+    train_sizes, train_scores, validation_scores = learning_curve(
+        model,
+        X,
+        y,
+        train_sizes=np.linspace(0.1, 1.0, 10),
+        cv=3,
+        scoring="neg_root_mean_squared_error",
+        n_jobs=1
+    )
 
-    residuals = np.asarray(y_test) - np.asarray(predictions)
+    # Convert negative RMSE into positive RMSE
+    train_rmse = -train_scores
+    validation_rmse = -validation_scores
 
-    plt.figure(figsize=(8, 6))
+    # Calculate mean and standard deviation
+    train_mean = np.mean(train_rmse, axis=1)
+    train_std = np.std(train_rmse, axis=1)
 
-    plt.scatter(predictions, residuals, alpha=0.5)
+    validation_mean = np.mean(validation_rmse, axis=1)
+    validation_std = np.std(validation_rmse, axis=1)
 
-    # Zero error reference line
-    plt.axhline(y=0, color="red", linestyle="--")
+    plt.figure(figsize=(9, 6))
 
-    plt.xlabel("Predicted Sales")
-    plt.ylabel("Residuals (Actual - Predicted)")
-    plt.title(f"Residual Plot - {model_name}")
+    # Training curve
+    plt.plot(
+        train_sizes,
+        train_mean,
+        marker="o",
+        label="Training RMSE"
+    )
+
+    # Validation curve
+    plt.plot(
+        train_sizes,
+        validation_mean,
+        marker="o",
+        label="Validation RMSE"
+    )
+
+    # Standard deviation areas
+    plt.fill_between(
+        train_sizes,
+        train_mean - train_std,
+        train_mean + train_std,
+        alpha=0.15
+    )
+
+    plt.fill_between(
+        train_sizes,
+        validation_mean - validation_std,
+        validation_mean + validation_std,
+        alpha=0.15
+    )
+
+    plt.xlabel("Number of Training Samples")
+    plt.ylabel("RMSE")
+    plt.title(f"Learning Curve - {model_name}")
+
+    plt.legend()
     plt.grid(alpha=0.3)
     plt.tight_layout()
     plt.show()
-
 
 # 3. Compare training and test performance
 def plot_train_test_comparison(
